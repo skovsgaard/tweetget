@@ -1,3 +1,3 @@
 var tweetget = require('./tweetget');
 
-tweetget('status402');
+tweetget.write('status402', 'file.txt');

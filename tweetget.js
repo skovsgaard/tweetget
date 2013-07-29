@@ -15,10 +15,17 @@ function tweetget(handle, cb) {
         tweets[i] = $(this).text();
       });      
       tweets.forEach(function(i) {
-        console.log(i + '\n ---');
+        //console.log(i + '\n ---');
+        return i + '\n --- \n';
       });
     }
   });
 }
 
 module.exports = tweetget;
+
+tweetget.write = function(handle, filename) {
+  tweetget(handle, function() {
+    console.log();
+  })
+}
