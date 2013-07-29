@@ -18,6 +18,7 @@ function tweetget(handle, cb) {
         //console.log(i + '\n ---');
         return i + '\n --- \n';
       });
+      cb(tweets);
     }
   });
 }
@@ -25,7 +26,11 @@ function tweetget(handle, cb) {
 module.exports = tweetget;
 
 tweetget.write = function(handle, filename) {
-  tweetget(handle, function() {
-    console.log();
-  })
+  var filer = fs.createWriteStream(filename);
+  tweetget(handle, function(res) {
+    filer.write('Tweets for ' + handle + ':\n\n');
+    res.forEach(function(i) {
+      filer.write(i + '\n --- \n');
+    });
+  });
 }
