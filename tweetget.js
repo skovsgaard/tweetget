@@ -11,10 +11,13 @@ function tweetget(handle, cb) {
         ignoreWhitespace: true,
         lowerCaseTags: true
       });
-      var times = $('.tweet-timestamp').attr('title');
-      $('.tweet-text').each(function(times) {
-        tweets[times] = $(this).text();
+
+      var tweetTexts = $('.tweet-text');
+      var times = $('.tweet-timestamp');
+      $(times).each(function(time) {
+        tweets[$(this).attr('title')] = $(tweetTexts[time]).text();
       });
+
       cb(tweets);
       return tweets;
     }
