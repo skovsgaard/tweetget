@@ -3,16 +3,17 @@ var cheerio = require('cheerio');
 var fs      = require('fs');
 
 function tweetget(handle, cb) {
-  var tweets = [];
+  var tweets = {};
   var target = "http://twitter.com/" + handle;
   request(target, function(err, res, body) {
     if (!err && res.statusCode == 200) {
       var $ = cheerio.load(body, {
         ignoreWhitespace: true,
         lowerCaseTags: true
-      });      
-      $('.tweet-text').each(function(i, element) {
-        tweets[i] = $(this).text();
+      });
+      var times = $('.tweet-timestamp').attr('title');
+      $('.tweet-text').each(function(times) {
+        tweets[times] = $(this).text();
       });
       cb(tweets);
       return tweets;
