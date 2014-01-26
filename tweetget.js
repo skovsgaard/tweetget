@@ -6,6 +6,8 @@ function tweetget(handle, cb) {
   var tweets = {};
   var target = "http://twitter.com/" + handle;
   request(target, function(err, res, body) {
+    if (err && cb) return cb(err);
+
     if (!err && res.statusCode == 200) {
       var $ = cheerio.load(body, {
         ignoreWhitespace: true,
@@ -18,20 +20,25 @@ function tweetget(handle, cb) {
         tweets[$(this).attr('title')] = $(tweetTexts[time]).text();
       });
 
-      cb(tweets);
-      return tweets;
+      if(cb) return cb(null, tweets);
     }
   });
 }
 
 module.exports = tweetget;
 
-tweetget.write = function(handle, filename) {
+tweetget.write = function(handle, filename, cb) {
   var filer = fs.createWriteStream(filename);
-  tweetget(handle, function(res) {
+  
+  filer.on('error', function(err) {
+    if (cb) return cb(err);
+  });
+
+  tweetget(handle, function(err, res) {
     filer.write('Tweets for ' + handle + ':\n\n');
-    res.forEach(function(i) {
+    for (var i in res) {
       filer.write(i + '\n --- \n');
-    });
+      if (cb) return cb(null, filename);
+    }
   });
 }
