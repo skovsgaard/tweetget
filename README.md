@@ -6,4 +6,20 @@ A simple module to import a full Twitter stream.
     require('./tweetget');
 .
 
-**Example:** See index.js for the simplest possible example of use.
+**Example:**
+
+Return an object containing posts with appropriate timestamps:
+
+    tweetget('status402', function(err, posts) {
+      if (!err) {
+        console.log(posts);
+      }
+    });
+
+Write the object to a file:
+
+    tweetget.write('status402', 'file.txt', function(err, posts) {
+      if (!err) {
+        console.log('Yay! You wrote stuff to file.txt');
+      }
+    });
